@@ -41,9 +41,11 @@ export function NavBar() {
       <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
         <button
           onClick={goHome}
-          className="font-mono text-accent-green text-base hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+          aria-label="NetShape — home"
         >
-          <span className="text-gray-600">$</span> netshape
+          <img src="/logo-mark.svg" alt="" width={36} height={30} />
+          <span className="font-sans font-bold text-white text-lg tracking-tight">NetShape</span>
         </button>
 
         <div className="hidden md:flex items-center gap-1">

@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
-  <text x="16" y="24" font-family="JetBrains Mono, monospace" font-size="22" font-weight="bold" fill="#00ff88" text-anchor="middle">$</text>
+  <!-- Throttled waveform icon scaled to 32x32 (9 bars, bar w=2, step=3) -->
+  <rect x="1"    y="4"    width="2" height="24" rx="1" fill="#00ff88"/>
+  <rect x="4"    y="6.5"  width="2" height="19" rx="1" fill="#00ff88"/>
+  <rect x="7"    y="9"    width="2" height="14" rx="1" fill="#00ff88"/>
+  <rect x="10"   y="12"   width="2" height="8"  rx="1" fill="#00ff88"/>
+  <rect x="13"   y="13.5" width="2" height="5"  rx="1" fill="#00ff88" opacity="0.55"/>
+  <rect x="16"   y="14.5" width="2" height="3"  rx="1" fill="#00ff88" opacity="0.3"/>
+  <rect x="19"   y="13.5" width="2" height="5"  rx="1" fill="#00ff88" opacity="0.55"/>
+  <rect x="22"   y="12"   width="2" height="8"  rx="1" fill="#00ff88"/>
+  <rect x="25"   y="9"    width="2" height="14" rx="1" fill="#00ff88"/>
+  <rect x="28"   y="6.5"  width="2" height="19" rx="1" fill="#00ff88"/>
 </svg>
