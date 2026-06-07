@@ -219,6 +219,13 @@ function CommandGroupAccordion({
     >
       <button
         onClick={() => setOpen(!open)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setOpen(!open);
+          }
+        }}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-5 py-4 bg-terminal-surface hover:bg-terminal-dim transition-colors text-left"
       >
         <h3 className="font-sans font-semibold text-white">{group.title}</h3>

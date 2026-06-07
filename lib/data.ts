@@ -1,13 +1,7 @@
 export const NAV_SECTIONS = [
   { id: "hero", label: "Home" },
-  { id: "what-is-netshape", label: "About" },
   { id: "features", label: "Features" },
-  { id: "profiles", label: "Profiles" },
   { id: "quick-start", label: "Quick Start" },
-  { id: "cli-reference", label: "CLI" },
-  { id: "dashboard", label: "Dashboard" },
-  { id: "scenarios", label: "Scenarios" },
-  { id: "control-api", label: "API" },
   { id: "installation", label: "Install" },
 ];
 

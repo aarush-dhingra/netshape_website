@@ -2,24 +2,8 @@
 
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { PlatformTabs } from "@/components/ui/PlatformTabs";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Check } from "lucide-react";
-
-const installTabs = [
-  {
-    label: "macOS",
-    content: "pip install netshape",
-  },
-  {
-    label: "Windows",
-    content: "pip install netshape",
-  },
-  {
-    label: "Linux",
-    content: "pip install netshape",
-  },
-];
 
 const requirements = [
   "Python ≥ 3.10",
@@ -44,7 +28,7 @@ export function Installation() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5 }}
         >
-          <PlatformTabs tabs={installTabs} />
+          <CodeBlock code="pip install netshape" language="bash" />
 
           <div className="mt-6 space-y-4">
             <div>
@@ -52,7 +36,7 @@ export function Installation() {
                 Dev install (editable)
               </h3>
               <CodeBlock
-                code={`git clone https://github.com/netshape/netshape\ncd netshape\npip install -e ".[dev,scenarios]"`}
+                code={`git clone https://github.com/aarush-dhingra/netshape\ncd netshape\npip install -e ".[dev,scenarios]"`}
                 language="bash"
                 showCopy={false}
               />
