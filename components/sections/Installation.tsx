@@ -15,7 +15,7 @@ const requirements = [
 
 export function Installation() {
   return (
-    <section id="installation" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="installation" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Installation"
         subtitle="One command. Zero dependencies beyond Python. Cross-platform."

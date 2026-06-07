@@ -183,7 +183,7 @@ const groups: CommandGroup[] = [
 
 export function CliReference() {
   return (
-    <section id="cli-reference" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="cli-reference" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="CLI Reference"
         subtitle="Complete command reference. Every flag, every option, every example."

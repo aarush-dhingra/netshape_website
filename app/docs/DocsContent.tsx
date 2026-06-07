@@ -9,8 +9,8 @@ import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="mb-16 scroll-mt-20">
-      <h2 className="font-sans text-2xl font-bold text-white mb-6">{title}</h2>
+    <section id={id} className="mb-12 sm:mb-16 scroll-mt-20">
+      <h2 className="font-sans text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">{title}</h2>
       {children}
     </section>
   );
@@ -18,8 +18,8 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 function SubSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <div id={id} className="mb-10 scroll-mt-20">
-      <h3 className="font-mono text-accent-green text-lg mb-4">{title}</h3>
+    <div id={id} className="mb-8 sm:mb-10 scroll-mt-20">
+      <h3 className="font-mono text-accent-green text-base sm:text-lg mb-3 sm:mb-4">{title}</h3>
       {children}
     </div>
   );
@@ -27,8 +27,8 @@ function SubSection({ id, title, children }: { id: string; title: string; childr
 
 function Code({ children, className }: { children: string; className?: string }) {
   return (
-    <div className="rounded-lg bg-[#0d0d0d] border border-terminal-border overflow-hidden my-4">
-      <pre className={clsx("overflow-x-auto px-4 py-3 text-sm leading-relaxed font-mono", className)}>
+    <div className="rounded-lg bg-[#0d0d0d] border border-terminal-border overflow-x-auto my-4">
+      <pre className={clsx("px-4 py-3 text-sm leading-relaxed font-mono", className)}>
         <code className="text-[#e0e0e0]">{children}</code>
       </pre>
     </div>
@@ -37,12 +37,12 @@ function Code({ children, className }: { children: string; className?: string })
 
 function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
   return (
-    <div className="overflow-x-auto my-4 rounded-lg border border-terminal-border">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto my-4 rounded-lg border border-terminal-border max-w-full">
+      <table className="min-w-full text-sm">
         <thead>
           <tr className="bg-terminal-surface text-left text-gray-400 font-mono text-xs">
             {headers.map((h) => (
-              <th key={h} className="py-2.5 px-4 font-normal">{h}</th>
+              <th key={h} className="py-2.5 px-3 sm:px-4 font-normal whitespace-nowrap">{h}</th>
             ))}
           </tr>
         </thead>
@@ -50,7 +50,7 @@ function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
           {rows.map((row, i) => (
             <tr key={i} className="hover:bg-terminal-surface/50">
               {row.map((cell, j) => (
-                <td key={j} className="py-2 px-4 text-gray-300">{cell}</td>
+                <td key={j} className="py-2 px-3 sm:px-4 text-gray-300 text-xs sm:text-sm">{cell}</td>
               ))}
             </tr>
           ))}
@@ -247,7 +247,7 @@ export function DocsContent() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full overflow-x-hidden">
       {/* Mobile sidebar toggle */}
       <button
         className="fixed bottom-4 left-4 z-50 lg:hidden px-4 py-2 rounded-lg bg-terminal-surface border border-terminal-border text-accent-green font-mono text-sm"
@@ -285,10 +285,10 @@ export function DocsContent() {
       </aside>
 
       {/* Main content */}
-      <div className="max-w-4xl mx-auto px-6 py-12 lg:pl-[calc(16rem+1.5rem)]">
+      <div className="min-w-0 w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:pl-[calc(16rem+1.5rem)]">
         <p className="font-mono text-accent-green text-sm mb-2">netshape --docs</p>
-        <h1 className="font-sans text-4xl font-bold text-white mb-3">Complete Documentation</h1>
-        <p className="text-gray-400 text-lg font-sans mb-12">
+        <h1 className="font-sans text-3xl sm:text-4xl font-bold text-white mb-3">Complete Documentation</h1>
+        <p className="text-gray-400 text-base sm:text-lg font-sans mb-8 sm:mb-12">
           NetShape is a local throttling proxy for simulating degraded network conditions.
           It wraps any app or command, injecting latency, bandwidth limits, packet loss, and jitter
           so you can test how your software behaves on slow, flaky, or unreliable connections.

@@ -28,7 +28,7 @@ const steps = [
 
 export function QuickStart() {
   return (
-    <section id="quick-start" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="quick-start" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Quick Start"
         subtitle="Get throttling in 30 seconds. No sign-up, no config files, no admin prompts."

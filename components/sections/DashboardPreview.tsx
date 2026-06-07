@@ -7,7 +7,7 @@ import { Activity, ArrowDown, ArrowUp, Wifi, Gauge } from "lucide-react";
 
 export function DashboardPreview() {
   return (
-    <section id="dashboard" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="dashboard" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Web Dashboard"
         subtitle="Live visual controls built into the proxy. Open localhost:8091 in your browser while a session is active."

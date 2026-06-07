@@ -104,7 +104,7 @@ phases:
 
 export function Scenarios() {
   return (
-    <section id="scenarios" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="scenarios" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Scenario Scripting"
         subtitle="Simulate dynamic network conditions over time. YAML-based, live-updated, auto-restored on completion."

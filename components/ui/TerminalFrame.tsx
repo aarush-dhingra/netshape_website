@@ -13,7 +13,7 @@ export function TerminalFrame({
 }: TerminalFrameProps) {
   return (
     <div
-      className={`rounded-lg border border-terminal-border bg-[#0d0d0d] overflow-hidden ${className}`}
+      className={`rounded-lg border border-terminal-border bg-[#0d0d0d] overflow-x-auto ${className}`}
     >
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-terminal-border bg-[#0a0a0a]">
         <div className="flex gap-1.5">

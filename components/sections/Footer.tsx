@@ -2,8 +2,8 @@ import { GitHubIcon } from "@/components/ui/GitHubIcon";
 
 export function Footer() {
   return (
-    <footer id="footer" className="border-t border-terminal-border mt-24">
-      <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer id="footer" className="border-t border-terminal-border mt-16 sm:mt-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
         <div className="text-center md:text-left">
           <p className="font-mono text-accent-green text-sm">netshape</p>
           <p className="text-gray-500 text-xs font-sans mt-1">

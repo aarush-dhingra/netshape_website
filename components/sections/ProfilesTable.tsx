@@ -23,7 +23,7 @@ const tierBadge: Record<string, { text: string; variant: "green" | "cyan" | "amb
 
 export function ProfilesTable() {
   return (
-    <section id="profiles" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="profiles" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Built-in Profiles"
         subtitle="12 curated network presets — from 2G mobile to gigabit fiber. Every profile is a combination of bandwidth, latency, packet loss, and jitter."

@@ -32,7 +32,7 @@ export function CodeBlock({
   return (
     <div
       className={clsx(
-        "relative group rounded-lg bg-[#0d0d0d] border border-terminal-border overflow-hidden",
+        "relative group rounded-lg bg-[#0d0d0d] border border-terminal-border overflow-x-auto",
         className,
       )}
     >

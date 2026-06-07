@@ -38,7 +38,7 @@ export function NavBar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-terminal-border bg-terminal-bg/80 backdrop-blur-md">
-      <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <button
           onClick={goHome}
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
@@ -98,7 +98,7 @@ export function NavBar() {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-terminal-border bg-terminal-bg/95 backdrop-blur-md">
-          <div className="px-6 py-3 flex flex-col gap-1">
+          <div className="px-4 sm:px-6 py-3 flex flex-col gap-1">
             {NAV_SECTIONS.map((section) => (
               <button
                 key={section.id}

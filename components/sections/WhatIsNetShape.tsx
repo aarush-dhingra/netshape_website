@@ -33,7 +33,7 @@ const advantages = [
 
 export function WhatIsNetShape() {
   return (
-    <section id="what-is-netshape" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="what-is-netshape" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="What is NetShape?"
         subtitle="A local throttling proxy for testing any process under degraded network conditions — no OS-level rules, no admin required."
@@ -68,7 +68,7 @@ export function WhatIsNetShape() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-terminal-surface border border-terminal-border rounded-lg p-6 font-mono text-sm space-y-4"
+          className="bg-terminal-surface border border-terminal-border rounded-lg p-4 sm:p-6 font-mono text-sm space-y-4"
         >
           <div className="flex items-center gap-3 pb-4 border-b border-terminal-border">
             <div className="w-8 h-8 rounded bg-accent-green/10 flex items-center justify-center">

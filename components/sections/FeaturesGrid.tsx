@@ -27,7 +27,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
 
 export function FeaturesGrid() {
   return (
-    <section id="features" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Features"
         subtitle="Everything you need to test app behavior under real-world network conditions."

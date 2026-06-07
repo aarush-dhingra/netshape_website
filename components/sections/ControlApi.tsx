@@ -30,7 +30,7 @@ const methodColors: Record<string, string> = {
 
 export function ControlApi() {
   return (
-    <section id="control-api" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="control-api" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <SectionHeading
         title="Control API"
         subtitle="REST API on port 8091 (127.0.0.1 only). Every endpoint returns JSON. No authentication needed — local-only access."

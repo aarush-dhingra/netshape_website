@@ -25,7 +25,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-[90vh] flex flex-col items-center justify-center px-6 pt-20 pb-16"
+      className="min-h-[85vh] sm:min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 pb-12 sm:pb-16"
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -43,11 +43,11 @@ export function Hero() {
         </motion.p>
 
         <h1 className="font-sans text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight mb-6">
-          Simulate any network.
-          <br />
-          <span className="text-accent-green">No admin</span>, no OS rules,
-          <br />
-          no friction.
+          <span className="block">Simulate any network.</span>
+          <span className="block">
+            <span className="text-accent-green">No admin</span>, no OS rules,
+          </span>
+          <span className="block">no friction.</span>
         </h1>
 
         <p className="text-gray-400 text-lg md:text-xl font-sans max-w-2xl mx-auto mb-10">
