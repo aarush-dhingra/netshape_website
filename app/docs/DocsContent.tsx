@@ -286,7 +286,7 @@ export function DocsContent() {
 
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-6 py-12 lg:pl-[calc(16rem+1.5rem)]">
-        <p className="font-mono text-accent-green text-sm mb-2">$ netshape --docs</p>
+        <p className="font-mono text-accent-green text-sm mb-2">netshape --docs</p>
         <h1 className="font-sans text-4xl font-bold text-white mb-3">Complete Documentation</h1>
         <p className="text-gray-400 text-lg font-sans mb-12">
           NetShape is a local throttling proxy for simulating degraded network conditions.

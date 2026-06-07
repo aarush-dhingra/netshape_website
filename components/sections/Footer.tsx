@@ -5,9 +5,7 @@ export function Footer() {
     <footer id="footer" className="border-t border-terminal-border mt-24">
       <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
-          <p className="font-mono text-accent-green text-sm">
-            <span className="text-gray-600">$</span> netshape
-          </p>
+          <p className="font-mono text-accent-green text-sm">netshape</p>
           <p className="text-gray-500 text-xs font-sans mt-1">
             Open source under MIT License
           </p>
