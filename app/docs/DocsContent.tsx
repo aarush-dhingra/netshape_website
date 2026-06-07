@@ -1,30 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 import clsx from "clsx";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 
-function SidebarLink({ href, children, active, onClick }: { href: string; children: React.ReactNode; active: boolean; onClick: () => void }) {
-  return (
-    <a
-      href={href}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-        const el = document.querySelector(href);
-        el?.scrollIntoView({ behavior: "smooth" });
-      }}
-      className={clsx(
-        "block py-1.5 text-sm font-sans transition-colors border-l-2 pl-3",
-        active
-          ? "text-accent-green border-accent-green"
-          : "text-gray-400 border-transparent hover:text-gray-200 hover:border-terminal-dim"
-      )}
-    >
-      {children}
-    </a>
-  );
-}
+// --- Shared UI primitives ---
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -79,48 +60,161 @@ function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
   );
 }
 
+// --- Sidebar ---
+
+interface TocGroup {
+  label: string;
+  items: TocItem[];
+}
+
 interface TocItem {
   id: string;
   label: string;
   children?: TocItem[];
 }
 
-const toc: TocItem[] = [
-  { id: "how-it-works", label: "How It Works" },
-  { id: "installation", label: "Installation" },
-  { id: "first-time-setup", label: "First-Time Setup" },
-  { id: "quick-start", label: "Quick Start" },
-  { id: "built-in-profiles", label: "Built-in Profiles" },
+const tocGroups: TocGroup[] = [
   {
-    id: "cli-reference", label: "CLI Reference", children: [
-      { id: "cli-setup", label: "netshape setup" },
-      { id: "cli-run", label: "netshape run" },
-      { id: "cli-adjust", label: "netshape adjust" },
-      { id: "cli-status", label: "netshape status" },
-      { id: "cli-stop", label: "netshape stop" },
-      { id: "cli-test", label: "netshape test" },
-      { id: "cli-profiles", label: "netshape profiles" },
-      { id: "cli-metrics", label: "netshape metrics" },
-      { id: "cli-rule", label: "netshape rule" },
-      { id: "cli-scenario", label: "netshape scenario" },
+    label: "Getting Started",
+    items: [
+      { id: "how-it-works", label: "How It Works" },
+      { id: "installation", label: "Installation" },
+      { id: "first-time-setup", label: "First-Time Setup" },
+      { id: "quick-start", label: "Quick Start" },
     ],
   },
-  { id: "web-dashboard", label: "Web Dashboard" },
-  { id: "per-endpoint-rules", label: "Per-Endpoint Rules" },
-  { id: "scenarios", label: "Scenarios" },
-  { id: "compatibility-guide", label: "Compatibility Guide" },
-  { id: "throttle-parameters", label: "Understanding Throttle Parameters" },
-  { id: "log-files", label: "Log Files" },
-  { id: "persistence", label: "Persistence" },
-  { id: "common-questions", label: "Common Questions" },
+  {
+    label: "Reference",
+    items: [
+      { id: "built-in-profiles", label: "Built-in Profiles" },
+      {
+        id: "cli-reference", label: "CLI Reference", children: [
+          { id: "cli-run", label: "netshape run" },
+          { id: "cli-adjust", label: "netshape adjust" },
+          { id: "cli-status", label: "netshape status" },
+          { id: "cli-stop", label: "netshape stop" },
+          { id: "cli-test", label: "netshape test" },
+          { id: "cli-profiles", label: "netshape profiles" },
+          { id: "cli-metrics", label: "netshape metrics" },
+          { id: "cli-rule", label: "netshape rule" },
+          { id: "cli-scenario", label: "netshape scenario" },
+          { id: "cli-setup", label: "netshape setup" },
+        ],
+      },
+      { id: "web-dashboard", label: "Web Dashboard" },
+      { id: "throttle-parameters", label: "Throttle Parameters" },
+    ],
+  },
+  {
+    label: "Guides",
+    items: [
+      { id: "per-endpoint-rules", label: "Per-Endpoint Rules" },
+      { id: "scenarios", label: "Scenarios" },
+      {
+        id: "compatibility-guide", label: "Compatibility Guide", children: [
+          { id: "compat-python", label: "Python Apps" },
+          { id: "compat-node", label: "Node.js Apps" },
+          { id: "compat-electron", label: "Electron Apps" },
+          { id: "compat-multi", label: "Multi-Service Apps" },
+          { id: "compat-does-not-work", label: "What Doesn't Work" },
+        ],
+      },
+      { id: "data-and-logs", label: "Data & Logs" },
+      { id: "faq", label: "FAQ" },
+    ],
+  },
 ];
 
-// Flatten all toc IDs for scrollspy
-function flattenIds(items: TocItem[]): string[] {
-  return items.flatMap((item) => [item.id, ...(item.children?.map((c) => c.id) ?? [])]);
+function flattenIds(groups: TocGroup[]): string[] {
+  return groups.flatMap((g) =>
+    g.items.flatMap((item) => [item.id, ...(item.children?.map((c) => c.id) ?? [])])
+  );
 }
 
-const allSectionIds = flattenIds(toc);
+const allSectionIds = flattenIds(tocGroups);
+
+function SidebarParent({
+  item,
+  activeId,
+  onNavigate,
+}: {
+  item: TocItem;
+  activeId: string;
+  onNavigate: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const hasActiveChild = item.children?.some((c) => c.id === activeId);
+  const isActive = hasActiveChild || activeId === item.id;
+
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(!open)}
+        className={clsx(
+          "w-full flex items-center gap-1 py-1.5 text-sm font-sans transition-colors border-l-2 pl-3 text-left",
+          isActive
+            ? "text-accent-green border-accent-green"
+            : "text-gray-400 border-transparent hover:text-gray-200 hover:border-terminal-dim"
+        )}
+      >
+        <span className="flex-1">{item.label}</span>
+        {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+      </button>
+      {open && item.children && (
+        <div className="ml-4 mt-0.5">
+          {item.children.map((child) => (
+            <a
+              key={child.id}
+              href={`#${child.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate(child.id);
+              }}
+              className={clsx(
+                "block py-1 text-xs font-sans transition-colors border-l-2 pl-3",
+                activeId === child.id
+                  ? "text-accent-green border-accent-green"
+                  : "text-gray-500 border-transparent hover:text-gray-300 hover:border-terminal-dim"
+              )}
+            >
+              {child.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SidebarLink({
+  item,
+  activeId,
+  onNavigate,
+}: {
+  item: TocItem;
+  activeId: string;
+  onNavigate: (id: string) => void;
+}) {
+  return (
+    <a
+      href={`#${item.id}`}
+      onClick={(e) => {
+        e.preventDefault();
+        onNavigate(item.id);
+      }}
+      className={clsx(
+        "block py-1.5 text-sm font-sans transition-colors border-l-2 pl-3",
+        activeId === item.id
+          ? "text-accent-green border-accent-green"
+          : "text-gray-400 border-transparent hover:text-gray-200 hover:border-terminal-dim"
+      )}
+    >
+      {item.label}
+    </a>
+  );
+}
+
+// --- Main component ---
 
 export function DocsContent() {
   const { activeId, navigateTo: scrollTo } = useScrollSpy(allSectionIds);
@@ -129,6 +223,27 @@ export function DocsContent() {
   const handleNavigate = (id: string) => {
     setSidebarOpen(false);
     scrollTo(id);
+  };
+
+  const renderSidebarItem = (item: TocItem) => {
+    if (item.children) {
+      return (
+        <SidebarParent
+          key={item.id}
+          item={item}
+          activeId={activeId}
+          onNavigate={handleNavigate}
+        />
+      );
+    }
+    return (
+      <SidebarLink
+        key={item.id}
+        item={item}
+        activeId={activeId}
+        onNavigate={handleNavigate}
+      />
+    );
   };
 
   return (
@@ -158,29 +273,12 @@ export function DocsContent() {
       >
         <nav className="p-4">
           <p className="font-mono text-accent-green text-xs mb-4 uppercase tracking-wider">Documentation</p>
-          {toc.map((item) => (
-            <div key={item.id} className="mb-1">
-              <SidebarLink
-                href={`#${item.id}`}
-                active={activeId === item.id}
-                onClick={() => handleNavigate(item.id)}
-              >
-                {item.label}
-              </SidebarLink>
-              {item.children && (
-                <div className="ml-3 mt-0.5">
-                  {item.children.map((child) => (
-                    <SidebarLink
-                      key={child.id}
-                      href={`#${child.id}`}
-                      active={activeId === child.id}
-                      onClick={() => handleNavigate(child.id)}
-                    >
-                      {child.label}
-                    </SidebarLink>
-                  ))}
-                </div>
-              )}
+          {tocGroups.map((group, gi) => (
+            <div key={group.label} className={gi > 0 ? "mt-6" : ""}>
+              <p className="font-mono text-[10px] uppercase tracking-wider text-gray-600 mb-2">{group.label}</p>
+              <div className="space-y-0.5">
+                {group.items.map(renderSidebarItem)}
+              </div>
             </div>
           ))}
         </nav>
@@ -334,20 +432,6 @@ netshape stop`}</Code>
 
         {/* CLI Reference */}
         <Section id="cli-reference" title="CLI Reference">
-          <SubSection id="cli-setup" title="netshape setup">
-            <p className="text-gray-300 font-sans leading-relaxed mb-4">
-              Interactive first-time setup wizard. Configures which features are enabled and your default throttle profile.
-            </p>
-            <Code>{`netshape setup`}</Code>
-            <p className="text-gray-300 font-sans leading-relaxed mb-4 mt-4">
-              Config file at <code className="text-accent-green font-mono text-xs">~/.netshape/config.json</code>:
-            </p>
-            <Code>{`{
-  "dashboard": true,
-  "default_profile": "3g"
-}`}</Code>
-          </SubSection>
-
           <SubSection id="cli-run" title="netshape run">
             <p className="text-gray-300 font-sans leading-relaxed mb-4">
               Starts a proxy session and launches your app as a child process. Everything after <code className="text-accent-green font-mono text-xs">--</code> is the command to run.
@@ -360,7 +444,7 @@ netshape stop`}</Code>
                 ["--latency", "-l", "Added latency (200ms, 1s)", "—"],
                 ["--loss", "", "Packet loss (2%, 0.5%)", "—"],
                 ["--jitter", "-j", "Latency variance (50ms)", "—"],
-                ["--timeout", "-t", "Auto-stop after duration (30m, 1h)", "—"],
+                ["--timeout", "-t", "Auto-stop after duration. Units: s (seconds), m (minutes), h (hours). E.g. 30m, 1h, 90s", "—"],
                 ["--port", "", "Proxy traffic port", "8090"],
                 ["--log-file", "", "Write JSON logs to file (rotating, 10 MB)", "—"],
               ]}
@@ -478,11 +562,20 @@ netshape rule remove "payment API"`}</Code>
             <p className="text-gray-300 font-sans leading-relaxed mb-4">
               Runs a sequence of network condition phases automatically over time.
             </p>
+            <Table
+              headers={["Option", "Description"]}
+              rows={[
+                ["--no-wait", "Submit the scenario and return immediately (useful in CI scripts)"],
+              ]}
+            />
             <Code>{`# List scenarios
 netshape scenario list
 
 # Run a built-in scenario
 netshape scenario run --builtin subway
+
+# Start scenario without blocking the terminal
+netshape scenario run --builtin subway --no-wait
 
 # Run from a YAML file
 netshape scenario run ./my-scenario.yaml
@@ -490,6 +583,20 @@ netshape scenario run ./my-scenario.yaml
 # Check status / stop
 netshape scenario status
 netshape scenario stop`}</Code>
+          </SubSection>
+
+          <SubSection id="cli-setup" title="netshape setup">
+            <p className="text-gray-300 font-sans leading-relaxed mb-4">
+              Interactive first-time setup wizard. Configures which features are enabled and your default throttle profile.
+            </p>
+            <Code>{`netshape setup`}</Code>
+            <p className="text-gray-300 font-sans leading-relaxed mb-4 mt-4">
+              Config file at <code className="text-accent-green font-mono text-xs">~/.netshape/config.json</code>:
+            </p>
+            <Code>{`{
+  "dashboard": true,
+  "default_profile": "3g"
+}`}</Code>
           </SubSection>
         </Section>
 
@@ -512,6 +619,41 @@ netshape scenario stop`}</Code>
             <li>• <strong className="text-white">Scenarios</strong> — Run built-in or custom scenarios; build custom ones</li>
             <li>• <strong className="text-white">Logs</strong> — Live proxy activity log</li>
           </ul>
+        </Section>
+
+        {/* Throttle Parameters */}
+        <Section id="throttle-parameters" title="Throttle Parameters">
+          <div className="space-y-6">
+            <div>
+              <h4 className="text-white font-sans font-semibold mb-2">Bandwidth</h4>
+              <p className="text-gray-300 font-sans leading-relaxed">
+                Caps the maximum throughput in each direction using a token bucket algorithm.
+                Short bursts above the limit are absorbed, sustained transfer is capped.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-sans font-semibold mb-2">Latency</h4>
+              <p className="text-gray-300 font-sans leading-relaxed">
+                Adds a fixed delay to each packet in both directions.
+                <strong className="text-accent-amber"> Key insight:</strong> Latency multiplies across round trips.
+                At 300ms, a TLS handshake (3 RTTs) costs ~900ms before a byte of data transfers.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-sans font-semibold mb-2">Loss</h4>
+              <p className="text-gray-300 font-sans leading-relaxed">
+                Randomly drops a percentage of packets. TCP will retransmit dropped packets, causing stalls.
+                Even 5% loss with 200ms latency causes TCP retransmit storms and drastic throughput collapse.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-sans font-semibold mb-2">Jitter</h4>
+              <p className="text-gray-300 font-sans leading-relaxed">
+                Varies the latency randomly ± the jitter value on each packet.
+                Causes unpredictable response times, streaming stutter, and WebSocket lag spikes.
+              </p>
+            </div>
+          </div>
         </Section>
 
         {/* Per-Endpoint Rules */}
@@ -591,6 +733,7 @@ phases:
               NetShape throttles HTTP and HTTPS traffic routed through the proxy. This covers the vast majority of modern app traffic.
             </p>
           </SubSection>
+
           <SubSection id="compat-python" title="Python Apps">
             <p className="text-gray-300 font-sans leading-relaxed mb-4">
               All standard HTTP libraries respect <code className="text-accent-green font-mono text-xs">HTTP_PROXY</code> automatically — no code changes needed.
@@ -609,6 +752,7 @@ phases:
               ]}
             />
           </SubSection>
+
           <SubSection id="compat-node" title="Node.js Apps">
             <Table
               headers={["Library / Runtime", "Throttled?", "Notes"]}
@@ -618,11 +762,12 @@ phases:
                 ["got", "Yes", ""],
                 ["undici", "Yes", ""],
                 ["OpenAI Node SDK", "Yes", ""],
-                ["http.get() / https.get() (native)", "No", "Must add https-proxy-agent"],
+                ["http.get() / https.get() (native)", "No", "Requires http-proxy-agent (HTTP) or https-proxy-agent (HTTPS) npm packages"],
                 ["supabase-js (Node server-side)", "Yes", ""],
               ]}
             />
           </SubSection>
+
           <SubSection id="compat-electron" title="Electron Apps">
             <p className="text-gray-300 font-sans leading-relaxed mb-4">
               Electron has two traffic paths. The renderer process uses Chromium's network stack and ignores <code className="text-accent-green font-mono text-xs">HTTP_PROXY</code> — you must configure it via <code className="text-accent-green font-mono text-xs">session.setProxy()</code>.
@@ -641,6 +786,24 @@ app.whenReady().then(async () => {
   await applyProxySettings();
   createWindow();
 });`}</Code>
+
+            <div className="rounded-lg border border-terminal-border bg-terminal-surface p-4 my-4">
+              <p className="text-accent-amber font-sans text-sm mb-3">
+                <strong>Common mistake — wrong order</strong>
+              </p>
+              <Code className="mt-2">{`// ❌ Wrong — window opens before proxy is configured
+app.whenReady().then(() => {
+  createWindow();           // renderer starts without proxy
+  applyProxySettings();     // too late, renderer ignores this
+});
+
+// ✅ Correct — proxy configured before window opens
+app.whenReady().then(async () => {
+  await applyProxySettings();  // proxy first
+  createWindow();
+});`}</Code>
+            </div>
+
             <div className="rounded-lg border border-terminal-border bg-terminal-surface p-4 my-4">
               <p className="text-accent-amber font-sans text-sm">
                 Do not use <code className="text-accent-green font-mono text-xs">npm run dev</code> (Vite dev server). Build first and launch Electron directly:
@@ -648,7 +811,31 @@ app.whenReady().then(async () => {
               <Code className="mt-2">{`npm run build
 netshape run --profile 3g -- npx electron .`}</Code>
             </div>
+
+            <h4 className="text-white font-sans font-semibold mb-2 mt-6">Verify the proxy is intercepting renderer traffic</h4>
+            <p className="text-gray-300 font-sans leading-relaxed mb-4">
+              After launching with <code className="text-accent-green font-mono text-xs">netshape run</code>, open the NetShape dashboard or run{" "}
+              <code className="text-accent-green font-mono text-xs">netshape status --watch</code> in another terminal.
+              Then trigger a network request from the renderer. You should see <strong className="text-white">Requests handled</strong> increment immediately.
+            </p>
+
+            <Code>{`// Quick smoke test — paste in Electron DevTools (Ctrl+Shift+I)
+fetch('https://httpbin.org/get')
+  .then(r => r.json())
+  .then(data => {
+    console.log('✓ Request succeeded — check NetShape dashboard for traffic');
+    console.log(data);
+  })
+  .catch(err => console.error('✗ Request failed:', err));`}</Code>
+
+            <ul className="space-y-2 text-gray-300 font-sans mb-4 mt-4">
+              <li>• Dashboard at <code className="text-accent-green font-mono text-xs">http://127.0.0.1:8091/dashboard</code> → "Requests handled" should increment</li>
+              <li>• <code className="text-accent-green font-mono text-xs">netshape status --watch</code> → "Connections active" should be &gt; 0 during a request</li>
+              <li>• If "Requests handled" stays at 0 → <code className="text-accent-green font-mono text-xs">applyProxySettings()</code> is not running before <code className="text-accent-green font-mono text-xs">createWindow()</code></li>
+              <li>• If requests fail entirely → check that <code className="text-accent-green font-mono text-xs">session.defaultSession.setProxy()</code> resolved before the request was made</li>
+            </ul>
           </SubSection>
+
           <SubSection id="compat-multi" title="Multi-Service Apps (Electron + Python backend)">
             <p className="text-gray-300 font-sans leading-relaxed mb-4">
               Launch each process through its own <code className="text-accent-green font-mono text-xs">netshape run</code> in separate terminals.
@@ -659,7 +846,8 @@ netshape run --profile 3g -- npx electron .
 # Terminal 2 — Python backend
 netshape run --profile 3g -- python -m uvicorn app.main:app`}</Code>
           </SubSection>
-          <SubSection id="compat-does-not-work" title="What Does Not Work">
+
+          <SubSection id="compat-does-not-work" title="What Doesn't Work">
             <Table
               headers={["Traffic type", "Example", "Why"]}
               rows={[
@@ -673,69 +861,35 @@ netshape run --profile 3g -- python -m uvicorn app.main:app`}</Code>
           </SubSection>
         </Section>
 
-        {/* Understanding Throttle Parameters */}
-        <Section id="throttle-parameters" title="Understanding Throttle Parameters">
-          <div className="space-y-6">
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">Bandwidth</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Caps the maximum throughput in each direction using a token bucket algorithm.
-                Short bursts above the limit are absorbed, sustained transfer is capped.
-              </p>
+        {/* Data & Logs (merged Log Files + Persistence) */}
+        <Section id="data-and-logs" title="Data &amp; Logs">
+          <SubSection id="data-logs-files" title="Log Files">
+            <Code>{`netshape run --profile 3g --log-file proxy.log -- python app.py`}</Code>
+            <p className="text-gray-300 font-sans leading-relaxed mt-4">
+              Each line is a JSON object. Log files rotate at 10 MB, keeping 3 backup files.
+            </p>
+          </SubSection>
+
+          <SubSection id="data-logs-persistence" title="Persistence">
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-white font-sans font-semibold mb-2">Rules</h4>
+                <p className="text-gray-300 font-sans leading-relaxed">
+                  Automatically saved to <code className="text-accent-green font-mono text-xs">~/.netshape/rules.json</code>. Restored on new sessions — always in disabled state.
+                </p>
+              </div>
+              <div>
+                <h4 className="text-white font-sans font-semibold mb-2">User Scenarios</h4>
+                <p className="text-gray-300 font-sans leading-relaxed">
+                  Scenario files saved to <code className="text-accent-green font-mono text-xs">~/.netshape/scenarios/</code> are automatically discovered.
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">Latency</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Adds a fixed delay to each packet in both directions.
-                <strong className="text-accent-amber"> Key insight:</strong> Latency multiplies across round trips.
-                At 300ms, a TLS handshake (3 RTTs) costs ~900ms before a byte of data transfers.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">Loss</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Randomly drops a percentage of packets. TCP will retransmit dropped packets, causing stalls.
-                Even 5% loss with 200ms latency causes TCP retransmit storms and drastic throughput collapse.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">Jitter</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Varies the latency randomly ± the jitter value on each packet.
-                Causes unpredictable response times, streaming stutter, and WebSocket lag spikes.
-              </p>
-            </div>
-          </div>
+          </SubSection>
         </Section>
 
-        {/* Log Files */}
-        <Section id="log-files" title="Log Files">
-          <Code>{`netshape run --profile 3g --log-file proxy.log -- python app.py`}</Code>
-          <p className="text-gray-300 font-sans leading-relaxed mt-4">
-            Each line is a JSON object. Log files rotate at 10 MB, keeping 3 backup files.
-          </p>
-        </Section>
-
-        {/* Persistence */}
-        <Section id="persistence" title="Persistence">
-          <div className="space-y-4">
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">Rules</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Automatically saved to <code className="text-accent-green font-mono text-xs">~/.netshape/rules.json</code>. Restored on new sessions — always in disabled state.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-sans font-semibold mb-2">User Scenarios</h4>
-              <p className="text-gray-300 font-sans leading-relaxed">
-                Scenario files saved to <code className="text-accent-green font-mono text-xs">~/.netshape/scenarios/</code> are automatically discovered.
-              </p>
-            </div>
-          </div>
-        </Section>
-
-        {/* Common Questions */}
-        <Section id="common-questions" title="Common Questions">
+        {/* FAQ */}
+        <Section id="faq" title="FAQ">
           <div className="space-y-8">
             <div>
               <h4 className="text-white font-sans font-semibold mb-2">Do I need to change my app's code?</h4>
