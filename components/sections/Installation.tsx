@@ -47,7 +47,7 @@ export function Installation() {
                 Verify installation
               </h3>
               <CodeBlock
-                code={`netshape --version\n# netshape 0.1.0`}
+                code={`netshape --version\n# netshape 1.0.1`}
                 language="bash"
                 showCopy={false}
               />
@@ -74,26 +74,12 @@ export function Installation() {
           </div>
 
           <div className="mt-6 border border-terminal-border rounded-lg p-6 bg-terminal-surface">
-            <h3 className="font-sans font-semibold text-white mb-4">Optional extras</h3>
+            <h3 className="font-sans font-semibold text-white mb-4">Dev install extras</h3>
             <div className="space-y-3">
-              <div>
-                <code className="text-accent-cyan font-mono text-sm">
-                  netshape[scenarios]
-                </code>
-                <p className="text-gray-400 text-sm font-sans mt-1">
-                  Adds PyYAML for custom scenario files. Built-in scenarios work without it.
-                </p>
-              </div>
               <div>
                 <code className="text-accent-cyan font-mono text-sm">netshape[dev]</code>
                 <p className="text-gray-400 text-sm font-sans mt-1">
                   pytest, pytest-asyncio, bandit, pip-audit — for contributing.
-                </p>
-              </div>
-              <div>
-                <code className="text-accent-cyan font-mono text-sm">netshape[all]</code>
-                <p className="text-gray-400 text-sm font-sans mt-1">
-                  Everything above.
                 </p>
               </div>
             </div>

@@ -51,7 +51,7 @@ export function Hero() {
         </h1>
 
         <p className="text-gray-400 text-lg md:text-xl font-sans max-w-2xl mx-auto mb-10">
-          See how your desktop app behaves on 2G, satellite, congested networks —
+          See how your app behaves on 2G, satellite, congested networks —
           all from a single command. Cross-platform. Open source.
         </p>
 

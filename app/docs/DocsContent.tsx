@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 function SidebarLink({ href, children, active, onClick }: { href: string; children: React.ReactNode; active: boolean; onClick: () => void }) {
   return (
@@ -115,9 +115,21 @@ const toc: TocItem[] = [
   { id: "common-questions", label: "Common Questions" },
 ];
 
+// Flatten all toc IDs for scrollspy
+function flattenIds(items: TocItem[]): string[] {
+  return items.flatMap((item) => [item.id, ...(item.children?.map((c) => c.id) ?? [])]);
+}
+
+const allSectionIds = flattenIds(toc);
+
 export function DocsContent() {
-  const [activeId, setActiveId] = useState("how-it-works");
+  const { activeId, navigateTo: scrollTo } = useScrollSpy(allSectionIds);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleNavigate = (id: string) => {
+    setSidebarOpen(false);
+    scrollTo(id);
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -140,7 +152,7 @@ export function DocsContent() {
       {/* Sidebar */}
       <aside
         className={clsx(
-          "fixed lg:sticky top-14 left-0 z-50 lg:z-auto h-[calc(100vh-3.5rem)] w-64 bg-terminal-bg border-r border-terminal-border overflow-y-auto flex-shrink-0 transition-transform lg:translate-x-0",
+          "fixed lg:fixed top-14 left-0 z-50 h-[calc(100vh-3.5rem)] w-64 bg-terminal-bg border-r border-terminal-border overflow-y-auto transition-transform lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -151,10 +163,7 @@ export function DocsContent() {
               <SidebarLink
                 href={`#${item.id}`}
                 active={activeId === item.id}
-                onClick={() => {
-                  setActiveId(item.id);
-                  setSidebarOpen(false);
-                }}
+                onClick={() => handleNavigate(item.id)}
               >
                 {item.label}
               </SidebarLink>
@@ -165,10 +174,7 @@ export function DocsContent() {
                       key={child.id}
                       href={`#${child.id}`}
                       active={activeId === child.id}
-                      onClick={() => {
-                        setActiveId(child.id);
-                        setSidebarOpen(false);
-                      }}
+                      onClick={() => handleNavigate(child.id)}
                     >
                       {child.label}
                     </SidebarLink>
@@ -181,7 +187,7 @@ export function DocsContent() {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 min-w-0 max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-12 lg:pl-[calc(16rem+1.5rem)]">
         <p className="font-mono text-accent-green text-sm mb-2">$ netshape --docs</p>
         <h1 className="font-sans text-4xl font-bold text-white mb-3">Complete Documentation</h1>
         <p className="text-gray-400 text-lg font-sans mb-12">

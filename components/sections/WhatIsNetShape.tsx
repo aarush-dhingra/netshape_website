@@ -9,7 +9,7 @@ const advantages = [
     icon: Shield,
     title: "Proxy-based approach",
     description:
-      "NetShape runs a local HTTP/SOCKS5 forward proxy that your app routes traffic through. No MITM, no certificate installation — HTTPS is tunneled transparently via CONNECT.",
+      "NetShape runs a local HTTP forward proxy that your app routes traffic through. No MITM, no certificate installation — HTTPS is tunneled transparently via CONNECT.",
   },
   {
     icon: Zap,
@@ -36,7 +36,7 @@ export function WhatIsNetShape() {
     <section id="what-is-netshape" className="max-w-6xl mx-auto px-6 py-24">
       <SectionHeading
         title="What is NetShape?"
-        subtitle="A local throttling proxy that lets developers test desktop apps under degraded network conditions — no OS-level rules, no admin required."
+        subtitle="A local throttling proxy for testing any process under degraded network conditions — no OS-level rules, no admin required."
       />
 
       <div className="grid md:grid-cols-2 gap-8 mb-16">

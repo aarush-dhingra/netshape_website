@@ -60,7 +60,7 @@ export const FEATURES: Feature[] = [
     icon: "Globe",
     title: "Full Protocol Support",
     description:
-      "HTTP/1.x, HTTPS via CONNECT tunnel, HTTP/2 over TLS, SOCKS5 TCP, WebSocket — all throttled transparently through a single local proxy.",
+      "HTTP/1.x, HTTPS via CONNECT tunnel, HTTP/2 over TLS, WebSocket — all throttled transparently through a single local proxy.",
   },
   {
     icon: "Zap",

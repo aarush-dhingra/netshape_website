@@ -15,7 +15,7 @@ export function Footer() {
 
         <div className="flex items-center gap-6">
           <a
-            href="https://github.com/netshape/netshape"
+            href="https://github.com/aarush-dhingra/netshape"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-400 hover:text-white transition-colors text-sm font-sans flex items-center gap-1.5"
