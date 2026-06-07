@@ -14,10 +14,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NetShape — Simulate network conditions for desktop apps",
+  title: "NetShape — Simulate network conditions for any app",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
   description:
-    "Run desktop apps through a local throttling proxy. Simulate 2G, 3G, satellite, congested networks — no admin, no OS rules. pip install netshape.",
-  metadataBase: new URL("https://netshape.dev"),
+    "Run any app through a local throttling proxy. Simulate 2G, 3G, satellite, congested networks — no admin, no OS rules. pip install netshape.",
+  metadataBase: new URL("https://netshape.vercel.app"),
   keywords: [
     "network throttling",
     "proxy",
@@ -31,16 +34,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: "NetShape — Network condition simulator for developers",
     description:
-      "Run desktop apps through a local throttling proxy. No admin, no OS rules. Cross-platform.",
+      "Run any app through a local throttling proxy. No admin, no OS rules. Cross-platform.",
     type: "website",
-    images: [{ url: "/og-image.svg", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "NetShape — Network condition simulator for developers",
     description:
-      "Run desktop apps through a local throttling proxy. No admin, no OS rules.",
-    images: ["/og-image.svg"],
+      "Run any app through a local throttling proxy. No admin, no OS rules.",
+    images: ["/og-image.png"],
   },
 };
 
